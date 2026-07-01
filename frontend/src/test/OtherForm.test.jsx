@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import OtherForm from "../components/OtherForm";
 
 describe("OtherForm", () => {
@@ -15,13 +15,8 @@ describe("OtherForm", () => {
       })
     ).toBeInTheDocument();
 
-    expect(
-      screen.getByLabelText(/subject/i)
-    ).toBeInTheDocument();
-
-    expect(
-      screen.getByLabelText(/message/i)
-    ).toBeInTheDocument();
+    expect(screen.getByLabelText(/subject/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/message/i)).toBeInTheDocument();
 
     expect(
       screen.getByRole("button", {
@@ -79,5 +74,56 @@ describe("OtherForm", () => {
     // Assert
     expect(subject).toHaveValue("");
     expect(message).toHaveValue("");
+  });
+
+  it("should submit the form when all required fields are filled", async () => {
+    // Arrange
+    const user = userEvent.setup();
+    const handleSubmit = vi.fn();
+
+    render(<OtherForm onSubmit={handleSubmit} />);
+
+    // Act
+    await user.type(
+      screen.getByLabelText(/subject/i),
+      "Parking Concern"
+    );
+
+    await user.type(
+      screen.getByLabelText(/message/i),
+      "I would like to ask about the available parking spaces."
+    );
+
+    await user.click(
+      screen.getByRole("button", {
+        name: /send/i,
+      })
+    );
+
+    // Assert
+    expect(handleSubmit).toHaveBeenCalledTimes(1);
+    expect(handleSubmit).toHaveBeenCalledWith({
+      subject: "Parking Concern",
+      message:
+        "I would like to ask about the available parking spaces.",
+    });
+  });
+
+  it("should not submit the form when required fields are empty", async () => {
+    // Arrange
+    const user = userEvent.setup();
+    const handleSubmit = vi.fn();
+
+    render(<OtherForm onSubmit={handleSubmit} />);
+
+    // Act
+    await user.click(
+      screen.getByRole("button", {
+        name: /send/i,
+      })
+    );
+
+    // Assert
+    expect(handleSubmit).not.toHaveBeenCalled();
   });
 });

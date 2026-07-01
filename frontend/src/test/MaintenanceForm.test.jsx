@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import MaintenanceForm from "../components/MaintenanceForm";
 
 describe("MaintenanceForm", () => {
@@ -20,7 +20,7 @@ describe("MaintenanceForm", () => {
     ).toBeInTheDocument();
 
     expect(
-      screen.getByLabelText(/issue/i)
+      screen.getByLabelText(/^issue$/i)
     ).toBeInTheDocument();
 
     expect(
@@ -46,7 +46,7 @@ describe("MaintenanceForm", () => {
     render(<MaintenanceForm />);
 
     const room = screen.getByLabelText(/room number/i);
-    const issue = screen.getByLabelText(/issue/i);
+    const issue = screen.getByLabelText(/^issue$/i);
     const description = screen.getByLabelText(/description/i);
 
     // Act
@@ -71,7 +71,7 @@ describe("MaintenanceForm", () => {
     render(<MaintenanceForm />);
 
     const room = screen.getByLabelText(/room number/i);
-    const issue = screen.getByLabelText(/issue/i);
+    const issue = screen.getByLabelText(/^issue$/i);
     const description = screen.getByLabelText(/description/i);
 
     await user.type(room, "205");
@@ -90,5 +90,66 @@ describe("MaintenanceForm", () => {
     expect(room).toHaveValue("");
     expect(issue).toHaveValue("");
     expect(description).toHaveValue("");
+  });
+
+  it("should submit the form when all required fields are filled", async () => {
+    // Arrange
+    const user = userEvent.setup();
+    const handleSubmit = vi.fn();
+
+    render(
+      <MaintenanceForm onSubmit={handleSubmit} />
+    );
+
+    // Act
+    await user.type(
+      screen.getByLabelText(/room number/i),
+      "205"
+    );
+
+    await user.type(
+      screen.getByLabelText(/^issue$/i),
+      "Leaking faucet"
+    );
+
+    await user.type(
+      screen.getByLabelText(/description/i),
+      "The faucet has been leaking since yesterday."
+    );
+
+    await user.click(
+      screen.getByRole("button", {
+        name: /send/i,
+      })
+    );
+
+    // Assert
+    expect(handleSubmit).toHaveBeenCalledTimes(1);
+    expect(handleSubmit).toHaveBeenCalledWith({
+      roomNumber: "205",
+      issue: "Leaking faucet",
+      description:
+        "The faucet has been leaking since yesterday.",
+    });
+  });
+
+  it("should not submit the form when all required fields are empty", async () => {
+    // Arrange
+    const user = userEvent.setup();
+    const handleSubmit = vi.fn();
+
+    render(
+      <MaintenanceForm onSubmit={handleSubmit} />
+    );
+
+    // Act
+    await user.click(
+      screen.getByRole("button", {
+        name: /send/i,
+      })
+    );
+
+    // Assert
+    expect(handleSubmit).not.toHaveBeenCalled();
   });
 });
