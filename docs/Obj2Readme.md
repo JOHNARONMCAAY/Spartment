@@ -1,28 +1,186 @@
-# Objective #2: Financial Monitoring and Report Generation System
-
-*Owner (Member Name):* Marco A. Labo-Labo
-
-## Objective Title
-
-Financial Monitoring and Report Generation System
-
-## Objective Description
-
-This objective focuses on implementing financial monitoring features that track apartment revenue, recorded tenant payments, and overall financial performance. The module provides apartment owners with financial insights through revenue analysis, payment monitoring, financial reports, and performance evaluation.
+# Objective #2: Financial Dashboard and Revenue Analytics
 
 ---
 
-# 5-Week Task Breakdown
+# 6-Week Task Breakdown
 
-| Week   | Day   | Task Description                                 | Sub-Tasks (breakdown)                                                                                                                       | Deliverable(s)                                                                                | Test Suite / PR Acceptance Criteria                                                                                                                                                                                                                                                                                                                                                               |
-| ------ | ----- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Week 1 | Day 1 | Implement Revenue Monitoring                     | • Create monthly revenue, occupancy, active tenants, and late payments components.<br>• Create Dashboard Title and sub-title.<br>• Side Bar | • Kpi Components<br>• Title and sub-title<br>• Side Bar                                       | • It should display the title, metric value and subtitle for kpi cards<br>• It should render the dashboard title and subtitle<br>• It should render the side bar items.                                                                                                                                                                                                                           |
-| Week 2 | Day 1 | Implement Revenue Dashboard                      | • Display total revenue<br>• Display summary cards                                                                                          | • Revenue Dashboard<br>• Financial Summary Cards                                              | • It should display the total revenue amount based on recorded payment transactions accurately<br>• It should display financial summary cards, including collected revenue, outstanding balances, and overdue payments correctly                                                                                                                                                                  |
-| Week 2 | Day 2 | Implement Payment Monitoring                     | • Create payment monitoring interface<br>• Develop payment status functions                                                                 | • Payment Monitoring Interface<br>• Payment Status Functions                                  | • It should display tenant payment records, balances, and payment statuses correctly in the payment monitoring interface<br>• It should identify and update payment statuses such as Paid, Pending, and Overdue accurately based on billing records                                                                                                                                               |
-| Week 3 | Day 1 | Implement Income Comparison                      | • Create income comparison interface<br>• Develop income comparison functions                                                               | • Income Comparison Interface<br>• Income Comparison Functions                                | • It should display projected income, actual income, and income variance correctly in the income comparison interface<br>• It should calculate income variance accurately by comparing projected rental income against actual collected revenue                                                                                                                                                   |
-| Week 3 | Day 2 | Implement Revenue Loss Analysis                  | • Retrieve unpaid account records<br>• Calculate estimated revenue loss                                                                     | • Unpaid Account Integration<br>• Revenue Loss Analysis Module                                | • It should retrieve unpaid tenant accounts, including outstanding balances and overdue payments, successfully<br>• It should calculate estimated revenue loss accurately based on unpaid and overdue billing records                                                                                                                                                                             |
-| Week 4 | Day 1 | Implement Payment Behavior Analysis and Database | • Retrieve payment history records<br>• Categorize payment behavior<br>• Store behavior analysis results                                    | • Payment History Integration<br>• Payment Behavior Categories<br>• Behavior Analysis Records | • It should retrieve tenant payment history records, including payment dates and payment statuses, successfully<br>• It should categorize tenant payment behavior accurately as Consistent Payer, Late Payer, or High-Risk Tenant based on payment history records<br>• It should store payment behavior analysis results successfully for use in reports, dashboards, and recommendation modules |
-| Week 4 | Day 2 | Implement Financial Reports and Database         | • Generate revenue reports<br>• Generate payment reports<br>• Retrieve report data from database                                            | • Revenue Report<br>• Payment Report<br>• Report Data Integration                             | • It should generate revenue reports containing total collected revenue, projected income, and revenue loss information successfully<br>• It should generate payment reports containing tenant payment records, balances, and payment statuses successfully<br>• It should retrieve and display report data accurately from the database for report generation                                    |
-| Week 5 | Day 1 | Implement Report Export                          | • Export reports to PDF                                                                                                                     | • Report Export Module                                                                        | • It should generate and export revenue and payment reports to PDF format successfully while preserving the report data and layout                                                                                                                                                                                                                                                                |
-| Week 5 | Day 2 | Integrate Financial Components                   | • Connect dashboard and reports<br>• Connect analytics modules                                                                              | • Dashboard Integration<br>• Analytics Integration                                            | • It should display report data accurately on the financial dashboard after report generation<br>• It should synchronize analytics results, including revenue loss analysis and payment behavior analysis, with the dashboard and reporting modules successfully                                                                                                                                  |
-| Week 6 | Day 1 | Finalize Financial Dashboard                     | • Display financial summaries                                                                                                               | • Financial Summary Dashboard                                                                 | • It should display accurate financial summaries, including total revenue, collected payments, outstanding balances, projected income, and revenue loss based on the latest system records                                                                                                                                                                                                        |
+## Week 1 - Day 1
+### Task Description
+**Implement Revenue Monitoring**
+
+#### Sub-Tasks
+- Create Monthly Revenue, Occupancy, Active Tenants, and Late Payments components
+- Create Dashboard Title and Sub-title
+- Create Side Bar
+
+#### Deliverables
+- KPI Components
+- Dashboard Title and Sub-title
+- Side Bar
+
+#### Test Suite / PR Acceptance Criteria
+- It should display the title, metric value, and subtitle for KPI cards.
+- It should render the dashboard title and subtitle.
+- It should render the side bar items.
+
+---
+
+## Week 2 - Day 1
+### Task Description
+**Implement Revenue Dashboard**
+
+#### Sub-Tasks
+- Create Rent Billing button
+- Create Billed, Collected, Pending, and Late payment components
+
+#### Deliverables
+- Rent Billing Button
+- Billed, Collected, Pending, and Late Payment Cards
+
+#### Test Suite / PR Acceptance Criteria
+- It should render the Rent Billing button successfully.
+- It should display the Billed, Collected, Pending, and Late payment cards successfully.
+
+---
+
+## Week 2 - Day 2
+### Task Description
+**Implement Payment Monitoring**
+
+#### Sub-Tasks
+- Create Utility Billing button
+- Create Electricity, Water, and Combined Utilities components
+
+#### Deliverables
+- Utility Billing Button
+- Electricity, Water, and Combined Utilities Cards
+
+#### Test Suite / PR Acceptance Criteria
+- It should render the Utility Billing button successfully.
+- It should display the Electricity, Water, and Combined Utilities cards successfully.
+
+---
+
+## Week 3 - Day 1
+### Task Description
+**Implement Income Comparison**
+
+#### Sub-Tasks
+- Create Income Comparison interface
+- Develop Income Comparison functions
+
+#### Deliverables
+- Income Comparison Interface
+- Income Comparison Functions
+
+#### Test Suite / PR Acceptance Criteria
+- It should display projected income, actual income, and income variance correctly in the income comparison interface.
+- It should calculate income variance accurately by comparing projected rental income against actual collected revenue.
+
+---
+
+## Week 3 - Day 2
+### Task Description
+**Implement Revenue Loss Analysis**
+
+#### Sub-Tasks
+- Retrieve unpaid account records
+- Calculate estimated revenue loss
+
+#### Deliverables
+- Unpaid Account Integration
+- Revenue Loss Analysis Module
+
+#### Test Suite / PR Acceptance Criteria
+- It should retrieve unpaid tenant accounts, including outstanding balances and overdue payments, successfully.
+- It should calculate estimated revenue loss accurately based on unpaid and overdue billing records.
+
+---
+
+## Week 4 - Day 1
+### Task Description
+**Implement Payment Behavior Analysis and Database**
+
+#### Sub-Tasks
+- Retrieve payment history records
+- Categorize payment behavior
+- Store behavior analysis results
+
+#### Deliverables
+- Payment History Integration
+- Payment Behavior Categories
+- Behavior Analysis Records
+
+#### Test Suite / PR Acceptance Criteria
+- It should retrieve tenant payment history records, including payment dates and payment statuses, successfully.
+- It should categorize tenant payment behavior accurately as Consistent Payer, Late Payer, or High-Risk Tenant based on payment history records.
+- It should store payment behavior analysis results successfully for use in reports, dashboards, and recommendation modules.
+
+---
+
+## Week 4 - Day 2
+### Task Description
+**Implement Financial Reports and Database**
+
+#### Sub-Tasks
+- Generate revenue reports
+- Generate payment reports
+- Retrieve report data from the database
+
+#### Deliverables
+- Revenue Report
+- Payment Report
+- Report Data Integration
+
+#### Test Suite / PR Acceptance Criteria
+- It should generate revenue reports containing total collected revenue, projected income, and revenue loss information successfully.
+- It should generate payment reports containing tenant payment records, balances, and payment statuses successfully.
+- It should retrieve and display report data accurately from the database for report generation.
+
+---
+
+## Week 5 - Day 1
+### Task Description
+**Implement Report Export**
+
+#### Sub-Tasks
+- Export reports to PDF
+
+#### Deliverables
+- Report Export Module
+
+#### Test Suite / PR Acceptance Criteria
+- It should generate and export revenue and payment reports to PDF format successfully while preserving the report data and layout.
+
+---
+
+## Week 5 - Day 2
+### Task Description
+**Integrate Financial Components**
+
+#### Sub-Tasks
+- Connect dashboard and reports
+- Connect analytics modules
+
+#### Deliverables
+- Dashboard Integration
+- Analytics Integration
+
+#### Test Suite / PR Acceptance Criteria
+- It should display report data accurately on the financial dashboard after report generation.
+- It should synchronize analytics results, including revenue loss analysis and payment behavior analysis, with the dashboard and reporting modules successfully.
+
+---
+
+## Week 6 - Day 1
+### Task Description
+**Finalize Financial Dashboard**
+
+#### Sub-Tasks
+- Display financial summaries
+
+#### Deliverables
+- Financial Summary Dashboard
+
+#### Test Suite / PR Acceptance Criteria
+- It should display accurate financial summaries, including total revenue, collected payments, outstanding balances, projected income, and revenue loss based on the latest system records.
