@@ -43,6 +43,17 @@ describe("Authentication Validation", () => {
     ).toThrow("Password is required.");
   });
 
+  it("should throw an error when both email and password are empty", () => {
+    // Arrange
+    const email = "";
+    const password = "";
+
+    // Act & Assert
+    expect(() =>
+      validateLoginCredentials(email, password)
+    ).toThrow("Email is required.");
+  });
+
   it("should throw an error when the email format is invalid", () => {
     // Arrange
     const email = "adminemail.com";
@@ -52,5 +63,27 @@ describe("Authentication Validation", () => {
     expect(() =>
       validateLoginCredentials(email, password)
     ).toThrow("Invalid email format.");
+  });
+
+  it("should throw an error when the email contains only spaces", () => {
+    // Arrange
+    const email = "   ";
+    const password = "admin123";
+
+    // Act & Assert
+    expect(() =>
+      validateLoginCredentials(email, password)
+    ).toThrow("Email is required.");
+  });
+
+  it("should throw an error when the password contains only spaces", () => {
+    // Arrange
+    const email = "admin@email.com";
+    const password = "   ";
+
+    // Act & Assert
+    expect(() =>
+      validateLoginCredentials(email, password)
+    ).toThrow("Password is required.");
   });
 });

@@ -154,10 +154,10 @@ describe("Authentication Service", () => {
     );
   });
 
-  it("should throw an error when the login credentials are invalid", async () => {
+  it("should throw an error when the password is provided but the email is empty", async () => {
     // Arrange
     const email = "";
-    const password = "";
+    const password = "admin123";
 
     validateLoginCredentials.mockImplementation(() => {
       throw new Error("Email is required.");
@@ -167,6 +167,50 @@ describe("Authentication Service", () => {
     await expect(
       authenticateUser(email, password)
     ).rejects.toThrow("Email is required.");
+
+    expect(validateLoginCredentials).toHaveBeenCalledWith(
+      email,
+      password
+    );
+
+    expect(getUserByEmail).not.toHaveBeenCalled();
+  });
+
+  it("should throw an error when the email is provided but the password is empty", async () => {
+    // Arrange
+    const email = "admin@email.com";
+    const password = "";
+
+    validateLoginCredentials.mockImplementation(() => {
+      throw new Error("Password is required.");
+    });
+
+    // Act & Assert
+    await expect(
+      authenticateUser(email, password)
+    ).rejects.toThrow("Password is required.");
+
+    expect(validateLoginCredentials).toHaveBeenCalledWith(
+      email,
+      password
+    );
+
+    expect(getUserByEmail).not.toHaveBeenCalled();
+  });
+
+  it("should not retrieve the user when the email format is invalid", async () => {
+    // Arrange
+    const email = "adminemail.com";
+    const password = "admin123";
+
+    validateLoginCredentials.mockImplementation(() => {
+      throw new Error("Invalid email format.");
+    });
+
+    // Act & Assert
+    await expect(
+      authenticateUser(email, password)
+    ).rejects.toThrow("Invalid email format.");
 
     expect(validateLoginCredentials).toHaveBeenCalledWith(
       email,
