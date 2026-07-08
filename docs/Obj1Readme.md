@@ -113,23 +113,31 @@ This objective focuses on implementing automated notifications and AI-driven rec
 ---
 
 ## Week 3 - Day 2
+
 ### Task Description
-**Guest Access Module with Database Integration**
+
+**Complete Tenant Portal Backend**
 
 #### Sub-Tasks
-- Create Guest UI
-- Create inquiry form and connect it to the database
-- Save guest inquiries
+
+- Create Tenant Validation
+- Implement Search Tenant Service
+- Create Tenant Search Unit Tests
+- Create Tenant Validation Unit Tests
 
 #### Deliverables
-- Guest UI
-- Inquiry Database Connection
-- Guest Inquiry Records
+
+- Tenant Validation
+- Search Tenant Service
+- Tenant Search Test
+- Tenant Validation Test
 
 #### Test Suite / PR Acceptance Criteria
-- It should display available rooms, rates, and room descriptions correctly on the guest interface.
-- It should allow guests to submit inquiries through the inquiry form and store the submitted data in the database successfully.
-- It should retrieve and display saved guest inquiry records accurately in the administrator dashboard.
+
+- It should validate tenant search requests successfully.
+- It should retrieve tenant records based on the tenant's name.
+- It should pass all Tenant Search Vitest unit tests successfully.
+- It should pass all Tenant Validation Vitest unit tests successfully.
 
 ---
 
