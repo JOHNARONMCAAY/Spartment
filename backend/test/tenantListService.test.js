@@ -1,11 +1,31 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 
 vi.mock("../model/tenantListModel.js", () => ({
   getTenantList: vi.fn(),
+  searchTenantByName: vi.fn(),
 }));
 
-import { getTenantList } from "../model/tenantListModel.js";
-import { fetchTenantList } from "../service/tenantListService.js";
+vi.mock("../validation/tenantListValidation.js", () => ({
+  validateTenantName: vi.fn(),
+}));
+
+import {
+  getTenantList,
+  searchTenantByName,
+} from "../model/tenantListModel.js";
+
+import { validateTenantName } from "../validation/tenantListValidation.js";
+
+import {
+  fetchTenantList,
+  findTenantByName,
+} from "../service/tenantListService.js";
 
 describe("Tenant List Service", () => {
   beforeEach(() => {
@@ -60,12 +80,69 @@ describe("Tenant List Service", () => {
     expect(result).toHaveLength(0);
   });
 
-  it("should throw an error when retrieving the tenant list fails", async () => {
+  it("should search tenant by name successfully", async () => {
     // Arrange
-    getTenantList.mockRejectedValue(new Error("Database Error"));
+    const tenantName = "John Doe";
+
+    const mockTenant = {
+      id: 1,
+      name: "John Doe",
+      email: "john@email.com",
+      room: "Room 101",
+      rent: "₱5,000",
+    };
+
+    searchTenantByName.mockResolvedValue(mockTenant);
+
+    // Act
+    const result = await findTenantByName(
+      tenantName
+    );
+
+    // Assert
+    expect(validateTenantName).toHaveBeenCalledWith(
+      tenantName
+    );
+
+    expect(searchTenantByName).toHaveBeenCalledWith(
+      tenantName
+    );
+
+    expect(result).toEqual(mockTenant);
+  });
+
+  it("should throw an error when the tenant cannot be found", async () => {
+    // Arrange
+    const tenantName = "Pedro Cruz";
+
+    searchTenantByName.mockRejectedValue(
+      new Error("Tenant not found.")
+    );
 
     // Act & Assert
-    await expect(fetchTenantList()).rejects.toThrow(
+    await expect(
+      findTenantByName(tenantName)
+    ).rejects.toThrow("Tenant not found.");
+
+    expect(validateTenantName).toHaveBeenCalledWith(
+      tenantName
+    );
+
+    expect(searchTenantByName).toHaveBeenCalledWith(
+      tenantName
+    );
+  });
+
+  it("should throw an error when retrieving the tenant list fails", async () => {
+    // Arrange
+    getTenantList.mockRejectedValue(
+      new Error("Database Error")
+    );
+
+    // Act & Assert
+    await expect(
+      fetchTenantList()
+    ).rejects.toThrow(
       "Failed to retrieve tenant list."
     );
   });
