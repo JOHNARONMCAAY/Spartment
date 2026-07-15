@@ -142,33 +142,34 @@ This objective focuses on implementing automated notifications and AI-driven rec
 ---
 
 ## Week 4 - Day 1
+
 ### Task Description
-**Integrate Revenue Dashboard with Backend**
+
+**Integrate Tenant Portal with Backend**
 
 #### Sub-Tasks
-- Create Revenue Dashboard API
-- Connect Revenue Dashboard to Revenue Service
-- Display dashboard KPI metrics from the backend
-- Display revenue monitoring data from the backend
-- Synchronize dashboard metrics
-- Handle unavailable dashboard data
-- Create Revenue Dashboard Integration Unit Tests
+
+- Create Tenant API
+- Connect Tenant Portal to Tenant Service
+- Display retrieved tenant information
+- Display payment history from the backend
+- Handle unavailable tenant information
 
 #### Deliverables
-- Revenue Dashboard API
-- Revenue Dashboard Integration
-- Connected KPI Components
-- Connected Revenue Dashboard Data
-- Dashboard Error Message Handling
-- Revenue Dashboard Integration Test
+
+- Tenant API
+- Tenant Portal Integration
+- Connected Tenant Information
+- Connected Payment History
+- Unavailable Tenant Message Handling
 
 #### Test Suite / PR Acceptance Criteria
-- It should retrieve dashboard KPI metrics from the backend successfully.
-- It should connect the Revenue Dashboard to the Revenue Service successfully.
-- It should display KPI values correctly using backend data.
-- It should display revenue monitoring information correctly using backend data.
-- It should display an appropriate message when dashboard information is unavailable.
-- It should pass all Revenue Dashboard Integration Vitest unit tests successfully.
+
+- It should retrieve tenant information from the backend successfully.
+- It should connect the Tenant Portal to the Tenant Service successfully.
+- It should display the retrieved tenant information correctly.
+- It should display payment history using backend data correctly.
+- It should display an appropriate message when tenant information is unavailable.
 
 ---
 

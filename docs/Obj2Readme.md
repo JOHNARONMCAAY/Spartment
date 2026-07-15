@@ -164,25 +164,35 @@ This objective focuses on implementing financial monitoring features that track 
 
 ### Task Description
 
-**Implement Payment Behavior Analysis and Database**
+**Integrate Revenue Dashboard with Backend**
 
 #### Sub-Tasks
 
-- Retrieve payment history records
-- Categorize payment behavior
-- Store behavior analysis results
+- Create Revenue Dashboard API
+- Connect Revenue Dashboard to Revenue Service
+- Display dashboard KPI metrics from the backend
+- Display revenue monitoring data from the backend
+- Synchronize dashboard metrics
+- Handle unavailable dashboard data
+- Create Revenue Dashboard Integration Unit Tests
 
 #### Deliverables
 
-- Payment History Integration
-- Payment Behavior Categories
-- Behavior Analysis Records
+- Revenue Dashboard API
+- Revenue Dashboard Integration
+- Connected KPI Components
+- Connected Revenue Dashboard Data
+- Dashboard Error Message Handling
+- Revenue Dashboard Integration Test
 
 #### Test Suite / PR Acceptance Criteria
 
-- It should retrieve tenant payment history records, including payment dates and payment statuses, successfully.
-- It should categorize tenant payment behavior accurately as Consistent Payer, Late Payer, or High-Risk Tenant based on payment history records.
-- It should store payment behavior analysis results successfully for use in reports, dashboards, and recommendation modules.
+- It should retrieve dashboard KPI metrics from the backend successfully.
+- It should connect the Revenue Dashboard to the Revenue Service successfully.
+- It should display KPI values correctly using backend data.
+- It should display revenue monitoring information correctly using backend data.
+- It should display an appropriate message when dashboard information is unavailable.
+- It should pass all Revenue Dashboard Integration Vitest unit tests successfully.
 
 ---
 
