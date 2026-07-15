@@ -143,22 +143,32 @@ This objective focuses on implementing automated notifications and AI-driven rec
 
 ## Week 4 - Day 1
 ### Task Description
-**Implement Bill Display with Database Integration**
+**Integrate Revenue Dashboard with Backend**
 
 #### Sub-Tasks
-- Retrieve billing records from the database
-- Display tenant bills
-- Display outstanding balances
+- Create Revenue Dashboard API
+- Connect Revenue Dashboard to Revenue Service
+- Display dashboard KPI metrics from the backend
+- Display revenue monitoring data from the backend
+- Synchronize dashboard metrics
+- Handle unavailable dashboard data
+- Create Revenue Dashboard Integration Unit Tests
 
 #### Deliverables
-- Billing Data Integration
-- Bill Display Interface
-- Outstanding Balance View
+- Revenue Dashboard API
+- Revenue Dashboard Integration
+- Connected KPI Components
+- Connected Revenue Dashboard Data
+- Dashboard Error Message Handling
+- Revenue Dashboard Integration Test
 
 #### Test Suite / PR Acceptance Criteria
-- It should retrieve billing records associated with the logged-in tenant from the database successfully.
-- It should display billing details including billing period, due date, amount due, and payment status accurately.
-- It should calculate and display the tenant's outstanding balance based on unpaid billing records correctly.
+- It should retrieve dashboard KPI metrics from the backend successfully.
+- It should connect the Revenue Dashboard to the Revenue Service successfully.
+- It should display KPI values correctly using backend data.
+- It should display revenue monitoring information correctly using backend data.
+- It should display an appropriate message when dashboard information is unavailable.
+- It should pass all Revenue Dashboard Integration Vitest unit tests successfully.
 
 ---
 
