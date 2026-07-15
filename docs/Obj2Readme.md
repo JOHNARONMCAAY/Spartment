@@ -200,25 +200,49 @@ This objective focuses on implementing financial monitoring features that track 
 
 ### Task Description
 
-**Implement Financial Reports and Database**
+**Integrate Analytics and Reports with Backend**
 
 #### Sub-Tasks
 
-- Generate Revenue Reports
-- Generate Payment Reports
-- Retrieve Report Data from the Database
+- Create Analytics API
+- Connect Analytics Dashboard to Analytics Service
+- Display forecast revenue analytics from the backend
+- Display moving average analytics from the backend
+- Display revenue trend analytics from the backend
+- Display occupancy analytics from the backend
+- Display payment status analytics from the backend
+- Display tenant growth analytics from the backend
+- Display smart recommendations from the backend
+- Handle unavailable analytics data
+- Create Analytics Integration Unit Tests
 
 #### Deliverables
 
-- Revenue Report
-- Payment Report
-- Report Data Integration
+- Analytics API
+- Analytics Dashboard Integration
+- Connected Forecast Revenue Analytics
+- Connected Moving Average Analytics
+- Connected Revenue Trend Analytics
+- Connected Occupancy Analytics
+- Connected Payment Status Analytics
+- Connected Tenant Growth Analytics
+- Connected Smart Recommendations
+- Analytics Error Message Handling
+- Analytics Integration Tests
 
 #### Test Suite / PR Acceptance Criteria
 
-- It should generate revenue reports containing total collected revenue, projected income, and revenue loss information successfully.
-- It should generate payment reports containing tenant payment records, balances, and payment statuses successfully.
-- It should retrieve and display report data accurately from the database for report generation.
+- It should retrieve analytics information from the backend successfully.
+- It should connect the Analytics Dashboard to the Analytics Service successfully.
+- It should calculate and display forecast revenue analytics correctly using backend data.
+- It should calculate and display moving average analytics correctly using backend data.
+- It should display revenue trend analytics correctly using backend data.
+- It should display occupancy analytics correctly using backend data.
+- It should display payment status analytics correctly using backend data.
+- It should display tenant growth analytics correctly using backend data.
+- It should display smart recommendations correctly using backend data.
+- It should display an appropriate message when analytics information is unavailable.
+- It should pass all Analytics Service Unit Tests and Analytics Integration Tests successfully.
 
 ---
 
