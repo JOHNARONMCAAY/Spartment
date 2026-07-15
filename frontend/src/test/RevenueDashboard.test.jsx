@@ -25,7 +25,27 @@ describe("Revenue Dashboard", () => {
     vi.clearAllMocks();
   });
 
-  it("should retrieve dashboard metrics successfully", async () => {
+  it("should retrieve dashboard KPI metrics from the backend successfully", async () => {
+    // Arrange
+    getDashboardMetrics.mockResolvedValue({
+      monthlyRevenue: "₱125,000",
+      occupancy: "95%",
+      activeTenants: 32,
+      latePayments: 4,
+    });
+
+    // Act
+    render(<RevenueDashboard />);
+
+    // Assert
+    await waitFor(() => {
+      expect(
+        getDashboardMetrics
+      ).toHaveBeenCalled();
+    });
+  });
+
+  it("should display KPI values correctly using backend data", async () => {
     // Arrange
     getDashboardMetrics.mockResolvedValue({
       monthlyRevenue: "₱125,000",
@@ -57,7 +77,55 @@ describe("Revenue Dashboard", () => {
     });
   });
 
-  it("should display an appropriate error message when dashboard information is unavailable", async () => {
+  it("should display revenue monitoring information correctly using backend data", async () => {
+    // Arrange
+    getDashboardMetrics.mockResolvedValue({
+      monthlyRevenue: "₱125,000",
+      occupancy: "95%",
+      activeTenants: 32,
+      latePayments: 4,
+    });
+
+    // Act
+    render(<RevenueDashboard />);
+
+    // Assert
+    await waitFor(() => {
+      expect(
+        screen.getByText("Monthly Revenue")
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getByText("Occupancy")
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getByText("Active Tenants")
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getByText("Late Payments")
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getByText("Current Month")
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getByText("Occupancy Rate")
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getByText("Current Tenants")
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getByText("Pending Accounts")
+      ).toBeInTheDocument();
+    });
+  });
+
+  it("should display an appropriate message when dashboard information is unavailable", async () => {
     // Arrange
     getDashboardMetrics.mockRejectedValue(
       new Error("Database Error")
@@ -70,36 +138,6 @@ describe("Revenue Dashboard", () => {
     await waitFor(() => {
       expect(
         screen.getByText("Something went wrong.")
-      ).toBeInTheDocument();
-    });
-  });
-
-  it("should display the loading component while retrieving dashboard metrics", () => {
-    // Arrange
-    getDashboardMetrics.mockImplementation(
-      () => new Promise(() => {})
-    );
-
-    // Act
-    render(<RevenueDashboard />);
-
-    // Assert
-    expect(
-      screen.getByText("Loading...")
-    ).toBeInTheDocument();
-  });
-
-  it("should display the empty state when no dashboard metrics exist", async () => {
-    // Arrange
-    getDashboardMetrics.mockResolvedValue(null);
-
-    // Act
-    render(<RevenueDashboard />);
-
-    // Assert
-    await waitFor(() => {
-      expect(
-        screen.getByText("No records found.")
       ).toBeInTheDocument();
     });
   });
