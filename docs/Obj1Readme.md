@@ -144,7 +144,6 @@ This objective focuses on implementing automated notifications and AI-driven rec
 ## Week 4 - Day 1
 
 ### Task Description
-
 **Integrate Tenant Portal with Backend**
 
 #### Sub-Tasks
