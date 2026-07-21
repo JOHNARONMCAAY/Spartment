@@ -1,88 +1,92 @@
 import { useState } from "react";
 
-export default function InquiryForm({ onSubmit = () => {} }) {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [contact, setContact] = useState("");
-  const [room, setRoom] = useState("");
-  const [moveIn, setMoveIn] = useState("");
-  const [message, setMessage] = useState("");
+export default function InquiryForm({
+  handleSubmit,
 
-  const handleSubmit = (e) => {
+  onSubmit,
+
+  onBack,
+}) {
+  const [form, setForm] = useState({
+    fullName: "",
+
+    email: "",
+
+    contact: "",
+
+    room: "",
+
+    moveIn: "",
+
+    message: "",
+  });
+
+  const update = (e) => {
+    setForm({
+      ...form,
+
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const submit = (e) => {
     e.preventDefault();
 
     if (
-      !fullName.trim() ||
-      !email.trim() ||
-      !contact.trim() ||
-      !room.trim() ||
-      !moveIn ||
-      !message.trim()
+      !form.fullName ||
+      !form.email ||
+      !form.contact ||
+      !form.room ||
+      !form.moveIn ||
+      !form.message
     ) {
       return;
     }
 
-    onSubmit({
-      fullName: fullName.trim(),
-      email: email.trim(),
-      contact: contact.trim(),
-      room: room.trim(),
-      moveIn,
-      message: message.trim(),
-    });
+    if (handleSubmit) {
+      handleSubmit({
+        ...form,
+      });
+    }
+
+    if (onSubmit) {
+      onSubmit({
+        ...form,
+      });
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={submit}>
       <h2>Spartment Assistant</h2>
 
-      <label htmlFor="fullname">Full Name</label>
-      <input
-        id="fullname"
-        type="text"
-        value={fullName}
-        onChange={(e) => setFullName(e.target.value)}
-      />
+      <button type="button" onClick={onBack}>
+        Back
+      </button>
+
+      <label htmlFor="fullName">Full Name</label>
+
+      <input id="fullName" value={form.fullName} onChange={update} />
 
       <label htmlFor="email">Email</label>
-      <input
-        id="email"
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+
+      <input id="email" type="email" value={form.email} onChange={update} />
 
       <label htmlFor="contact">Contact</label>
-      <input
-        id="contact"
-        type="text"
-        value={contact}
-        onChange={(e) => setContact(e.target.value)}
-      />
+
+      <input id="contact" value={form.contact} onChange={update} />
 
       <label htmlFor="room">Preferred Room</label>
-      <input
-        id="room"
-        type="text"
-        placeholder="e.g. 102"
-        value={room}
-        onChange={(e) => setRoom(e.target.value)}
-      />
 
-      <label htmlFor="movein">Move-in Date</label>
-      <input
-        id="movein"
-        type="date"
-        value={moveIn}
-        onChange={(e) => setMoveIn(e.target.value)}
-      />
+      <input id="room" value={form.room} onChange={update} />
+
+      <label htmlFor="moveIn">Move-in Date</label>
+
+      <input id="moveIn" type="date" value={form.moveIn} onChange={update} />
 
       <label htmlFor="message">Message</label>
-      <textarea
-        id="message"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-      />
+
+      <textarea id="message" value={form.message} onChange={update} />
 
       <button type="submit">Send</button>
     </form>

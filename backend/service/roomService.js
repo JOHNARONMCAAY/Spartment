@@ -1,43 +1,33 @@
-import { getRoomList } from "../model/roomModel.js";
-
-import { validateRoomSearch } from "../validation/roomValidation.js";
+import { getRooms } from "../model/roomModel.js";
 
 export async function fetchRoomList() {
   try {
-    const rooms = await getRoomList();
+    const rooms = await getRooms();
 
-    return rooms;
+    return rooms || [];
   } catch (error) {
     throw new Error("Failed to retrieve room records.");
   }
 }
 
 export async function searchRoom(search) {
-  try {
-    // Validate search input
-    validateRoomSearch(search);
-
-    // Retrieve room records
-    const rooms = await getRoomList();
-
-    // Search by room number or room status
-    const filteredRooms = rooms.filter(
-      (room) =>
-        room.roomNumber
-          .toLowerCase()
-          .includes(search.toLowerCase()) ||
-        room.status
-          .toLowerCase()
-          .includes(search.toLowerCase())
-    );
-
-    // Check if any room exists
-    if (filteredRooms.length === 0) {
-      throw new Error("Room not found.");
-    }
-
-    return filteredRooms;
-  } catch (error) {
-    throw new Error(error.message);
+  if (!search || search.trim() === "") {
+    throw new Error("Room search is required.");
   }
+
+  const rooms = await fetchRoomList();
+
+  const keyword = search.toLowerCase();
+
+  const room = rooms.find(
+    (item) =>
+      item.roomNumber.toLowerCase().includes(keyword) ||
+      item.status.toLowerCase().includes(keyword),
+  );
+
+  if (!room) {
+    throw new Error("Room not found.");
+  }
+
+  return room;
 }

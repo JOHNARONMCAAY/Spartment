@@ -2,58 +2,60 @@ import { useState } from "react";
 
 export default function MaintenanceForm({
   onSubmit = () => {},
+  onBack = () => {},
 }) {
   const [roomNumber, setRoomNumber] = useState("");
+
   const [issue, setIssue] = useState("");
+
   const [description, setDescription] = useState("");
 
-  const handleSubmit = (e) => {
+  const submit = (e) => {
     e.preventDefault();
 
-    if (
-      !roomNumber.trim() ||
-      !issue.trim() ||
-      !description.trim()
-    ) {
-      return;
-    }
+    if (!roomNumber || !issue || !description) return;
 
     onSubmit({
-      roomNumber: roomNumber.trim(),
-      issue: issue.trim(),
-      description: description.trim(),
+      roomNumber,
+
+      issue,
+
+      description,
     });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={submit}>
       <h2>Spartment Assistant</h2>
 
+      <button type="button" onClick={onBack}>
+        Back
+      </button>
+
       <label htmlFor="roomNumber">Room Number</label>
+
       <input
         id="roomNumber"
-        type="text"
         value={roomNumber}
         onChange={(e) => setRoomNumber(e.target.value)}
       />
 
       <label htmlFor="issue">Issue</label>
+
       <input
         id="issue"
-        type="text"
-        placeholder="e.g. Leaking faucet"
         value={issue}
         onChange={(e) => setIssue(e.target.value)}
       />
 
       <label htmlFor="description">Description</label>
+
       <textarea
         id="description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
 
-      <button type="button">Back</button>
       <button type="submit">Send</button>
     </form>
   );

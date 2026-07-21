@@ -1,27 +1,12 @@
-import {
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+import { fetchRoomList, searchRoom } from "../service/roomService.js";
+
+import { getRooms } from "../model/roomModel.js";
 
 vi.mock("../model/roomModel.js", () => ({
-  getRoomList: vi.fn(),
+  getRooms: vi.fn(),
 }));
-
-vi.mock("../validation/roomValidation.js", () => ({
-  validateRoomSearch: vi.fn(),
-}));
-
-import { getRoomList } from "../model/roomModel.js";
-
-import { validateRoomSearch } from "../validation/roomValidation.js";
-
-import {
-  fetchRoomList,
-  searchRoom,
-} from "../service/roomService.js";
 
 describe("Room Service", () => {
   beforeEach(() => {
@@ -30,173 +15,123 @@ describe("Room Service", () => {
 
   it("should retrieve room records successfully", async () => {
     // Arrange
-    const mockRooms = [
-      {
-        id: 1,
-        roomNumber: "Room 101",
-        status: "Occupied",
-        tenant: "Maria Santos",
-        rent: 6500,
-      },
-      {
-        id: 2,
-        roomNumber: "Room 102",
-        status: "Vacant",
-        tenant: "None",
-        rent: 5500,
-      },
-      {
-        id: 3,
-        roomNumber: "Room 103",
-        status: "Maintenance",
-        tenant: "Juan Dela Cruz",
-        rent: 7000,
-      },
-    ];
 
-    getRoomList.mockResolvedValue(mockRooms);
+    getRooms.mockResolvedValue([
+      {
+        roomId: 1,
+        roomNumber: "101",
+        status: "Vacant",
+        price: 5000,
+      },
+    ]);
 
     // Act
+
     const result = await fetchRoomList();
 
     // Assert
-    expect(result).toEqual(mockRooms);
-    expect(result).toHaveLength(3);
+
+    expect(result).toHaveLength(1);
+
+    expect(result[0].roomNumber).toBe("101");
+
+    expect(getRooms).toHaveBeenCalled();
   });
 
   it("should return an empty room list when no records exist", async () => {
     // Arrange
-    getRoomList.mockResolvedValue([]);
+
+    getRooms.mockResolvedValue([]);
 
     // Act
+
     const result = await fetchRoomList();
 
     // Assert
+
     expect(result).toEqual([]);
-    expect(result).toHaveLength(0);
   });
 
-  it("should search room records using the room number", async () => {
+  it("should search room records using room number", async () => {
     // Arrange
-    const search = "Room 101";
 
-    const mockRooms = [
+    getRooms.mockResolvedValue([
       {
-        id: 1,
-        roomNumber: "Room 101",
-        status: "Occupied",
-        tenant: "Maria Santos",
-        rent: 6500,
-      },
-    ];
-
-    getRoomList.mockResolvedValue(mockRooms);
-
-    // Act
-    const result = await searchRoom(search);
-
-    // Assert
-    expect(validateRoomSearch).toHaveBeenCalledWith(
-      search
-    );
-
-    expect(result).toEqual(mockRooms);
-    expect(result).toHaveLength(1);
-  });
-
-  it("should search room records using the room status", async () => {
-    // Arrange
-    const search = "Vacant";
-
-    const mockRooms = [
-      {
-        id: 2,
-        roomNumber: "Room 102",
+        roomNumber: "101",
         status: "Vacant",
-        tenant: "None",
-        rent: 5500,
       },
-    ];
-
-    getRoomList.mockResolvedValue(mockRooms);
+    ]);
 
     // Act
-    const result = await searchRoom(search);
+
+    const result = await searchRoom("101");
 
     // Assert
-    expect(validateRoomSearch).toHaveBeenCalledWith(
-      search
-    );
 
-    expect(result).toEqual(mockRooms);
-    expect(result).toHaveLength(1);
+    expect(result.roomNumber).toBe("101");
   });
 
-  it("should retrieve a room regardless of the search letter casing", async () => {
+  it("should search room records using room status", async () => {
     // Arrange
-    const search = "occupied";
 
-    const mockRooms = [
+    getRooms.mockResolvedValue([
       {
-        id: 1,
-        roomNumber: "Room 101",
-        status: "Occupied",
-        tenant: "Maria Santos",
-        rent: 6500,
+        roomNumber: "101",
+        status: "Vacant",
       },
-    ];
-
-    getRoomList.mockResolvedValue(mockRooms);
+    ]);
 
     // Act
-    const result = await searchRoom(search);
+
+    const result = await searchRoom("Vacant");
 
     // Assert
-    expect(validateRoomSearch).toHaveBeenCalledWith(
-      search
-    );
 
-    expect(result).toEqual(mockRooms);
-    expect(result).toHaveLength(1);
+    expect(result.status).toBe("Vacant");
   });
 
-  it("should throw an error when no room is found", async () => {
+  it("should retrieve room regardless of letter casing", async () => {
     // Arrange
-    const search = "Room 999";
 
-    getRoomList.mockResolvedValue([]);
+    getRooms.mockResolvedValue([
+      {
+        roomNumber: "101",
+        status: "Vacant",
+      },
+    ]);
 
-    // Act & Assert
-    await expect(
-      searchRoom(search)
-    ).rejects.toThrow("Room not found.");
+    // Act
+
+    const result = await searchRoom("VACANT");
+
+    // Assert
+
+    expect(result.status).toBe("Vacant");
   });
 
-  it("should throw an error when the room search is invalid", async () => {
+  it("should throw error when room does not exist", async () => {
     // Arrange
-    const search = "";
 
-    validateRoomSearch.mockImplementation(() => {
-      throw new Error("Room search is required.");
-    });
+    getRooms.mockResolvedValue([]);
 
-    // Act & Assert
-    await expect(
-      searchRoom(search)
-    ).rejects.toThrow("Room search is required.");
+    // Act + Assert
 
-    expect(getRoomList).not.toHaveBeenCalled();
+    await expect(searchRoom("999")).rejects.toThrow("Room not found.");
   });
 
-  it("should throw an error when retrieving room records fails", async () => {
-    // Arrange
-    getRoomList.mockRejectedValue(
-      new Error("Database Error")
-    );
+  it("should throw error when search is empty", async () => {
+    await expect(searchRoom("")).rejects.toThrow("Room search is required.");
+  });
 
-    // Act & Assert
+  it("should throw error when retrieving rooms fails", async () => {
+    // Arrange
+
+    getRooms.mockRejectedValue(new Error());
+
+    // Act + Assert
+
     await expect(fetchRoomList()).rejects.toThrow(
-      "Failed to retrieve room records."
+      "Failed to retrieve room records.",
     );
   });
 });

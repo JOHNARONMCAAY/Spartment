@@ -1,13 +1,15 @@
 import OptionButtons from "./OptionButtons";
 
-export default function CustomerServiceWindow({ onClose }) {
+export default function CustomerServiceWindow({ onClose, onSelect }) {
   return (
-    <div>
-      <h2>Spartment Assistant</h2>
+    <div className="border p-5 rounded-lg">
+      <div className="flex justify-between">
+        <h2 className="font-semibold">Spartment Assistant</h2>
 
-      <button onClick={onClose}>X</button>
+        <button onClick={onClose}>X</button>
+      </div>
 
-      <OptionButtons />
+      <OptionButtons onSelect={onSelect} />
     </div>
   );
 }

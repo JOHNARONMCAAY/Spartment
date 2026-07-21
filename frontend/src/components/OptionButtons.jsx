@@ -1,13 +1,11 @@
-export default function OptionButtons() {
+export default function OptionButtons({ onSelect }) {
   return (
-    <div>
-      <button>Inquiry</button>
-      <br />
+    <div className="space-y-2 mt-4">
+      <button onClick={() => onSelect("Inquiry")}>Inquiry</button>
 
-      <button>Maintenance</button>
-      <br />
+      <button onClick={() => onSelect("Maintenance")}>Maintenance</button>
 
-      <button>Other</button>
+      <button onClick={() => onSelect("Other")}>Other</button>
     </div>
   );
 }

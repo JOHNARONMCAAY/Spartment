@@ -1,7 +1,3 @@
 export default function Loading() {
-  return (
-    <div>
-      <p>Loading...</p>
-    </div>
-  );
+  return <div role="status">Loading...</div>;
 }

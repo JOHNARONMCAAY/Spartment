@@ -1,112 +1,54 @@
-import {
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from "vitest";
-
-vi.mock("../model/tenantModel.js", () => ({
-  getTenantInformation: vi.fn(),
-  searchTenantByName: vi.fn(),
-}));
-
-vi.mock("../validation/tenantValidation.js", () => ({
-  validateTenantId: vi.fn(),
-  validateTenantName: vi.fn(),
-}));
-
-import {
-  getTenantInformation,
-  searchTenantByName,
-} from "../model/tenantModel.js";
-
-import {
-  validateTenantId,
-  validateTenantName,
-} from "../validation/tenantValidation.js";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
   fetchTenantInformation,
   findTenantByName,
 } from "../service/tenantService.js";
 
+import { getTenants } from "../model/tenantModel.js";
+
+vi.mock("../model/tenantModel.js", () => ({
+  getTenants: vi.fn(),
+}));
+
 describe("Tenant Service", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it("should retrieve the tenant information successfully", async () => {
-    // Arrange
-    const tenantId = 1;
-
-    const mockTenant = {
-      id: tenantId,
-      tenant: {
+  it("should retrieve tenant information successfully", async () => {
+    getTenants.mockResolvedValue([
+      {
+        id: 1,
         name: "Juan Dela Cruz",
-        contact: "09123456789",
-        email: "juan@email.com",
+        email: "juan@gmail.com",
+        roomNumber: "101",
       },
-      room: {
-        roomNumber: "Room 101",
-        monthlyRent: 5000,
-        nextDue: "July 15, 2026",
-      },
-      payments: [],
-    };
+    ]);
 
-    getTenantInformation.mockResolvedValue(mockTenant);
+    const result = await fetchTenantInformation(1);
 
-    // Act
-    const result = await fetchTenantInformation(tenantId);
-
-    // Assert
-    expect(validateTenantId).toHaveBeenCalledWith(
-      tenantId
-    );
-    expect(getTenantInformation).toHaveBeenCalledWith(
-      tenantId
-    );
-    expect(result).toEqual(mockTenant);
+    expect(result.name).toBe("Juan Dela Cruz");
   });
 
   it("should search tenant by name successfully", async () => {
-    // Arrange
-    const tenantName = "Juan Dela Cruz";
-
-    const mockTenant = {
-      id: 1,
-      tenant: {
-        name: tenantName,
+    getTenants.mockResolvedValue([
+      {
+        id: 1,
+        name: "Juan Dela Cruz",
       },
-    };
+    ]);
 
-    searchTenantByName.mockResolvedValue(mockTenant);
+    const result = await findTenantByName("Juan Dela Cruz");
 
-    // Act
-    const result = await findTenantByName(
-      tenantName
-    );
-
-    // Assert
-    expect(validateTenantName).toHaveBeenCalledWith(
-      tenantName
-    );
-    expect(searchTenantByName).toHaveBeenCalledWith(
-      tenantName
-    );
-    expect(result).toEqual(mockTenant);
+    expect(result.id).toBe(1);
   });
 
-  it("should throw an error when tenant cannot be found", async () => {
-    // Arrange
-    searchTenantByName.mockRejectedValue(
-      new Error("Tenant not found.")
-    );
+  it("should throw error when tenant cannot be found", async () => {
+    getTenants.mockResolvedValue([]);
 
-    // Act & Assert
-    await expect(
-      findTenantByName("Pedro")
-    ).rejects.toThrow("Tenant not found.");
+    await expect(findTenantByName("Pedro")).rejects.toThrow(
+      "Tenant not found.",
+    );
   });
 });
