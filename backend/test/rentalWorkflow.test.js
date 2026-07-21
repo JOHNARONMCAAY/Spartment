@@ -1,5 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+/*
+|--------------------------------------------------------------------------
+| MOCKS
+|--------------------------------------------------------------------------
+*/
+
 vi.mock("bcryptjs", () => ({
   default: {
     hash: vi.fn(),
@@ -8,10 +14,15 @@ vi.mock("bcryptjs", () => ({
 
 vi.mock("../model/inquiryModel.js", () => ({
   createInquiryRecord: vi.fn(),
+
   getInquiryRecords: vi.fn(),
+
   getInquiryRecordById: vi.fn(),
+
   approveInquiryRecord: vi.fn(),
+
   rejectInquiryRecord: vi.fn(),
+
   updateInquiryRecord: vi.fn(),
 }));
 
@@ -21,18 +32,31 @@ vi.mock("../model/roomModel.js", () => ({
 
 vi.mock("../model/tenantModel.js", () => ({
   createTenant: vi.fn(),
+
   getTenants: vi.fn(),
+
   getTenantById: vi.fn(),
+
   getTenantByUserId: vi.fn(),
+
   getTenantByEmail: vi.fn(),
+
   getTenantByInquiryId: vi.fn(),
+
   updateTenantPassword: vi.fn(),
+
   updateTenantStatus: vi.fn(),
 }));
 
 vi.mock("../service/billingService.js", () => ({
   generateBilling: vi.fn(),
 }));
+
+/*
+|--------------------------------------------------------------------------
+| IMPORTS
+|--------------------------------------------------------------------------
+*/
 
 import bcrypt from "bcryptjs";
 
@@ -56,7 +80,13 @@ import { createInquiry, approveInquiry } from "../service/inquiryService.js";
 
 import { createTenantAccount } from "../service/tenantService.js";
 
-describe("Complete Rental Workflow", () => {
+/*
+|--------------------------------------------------------------------------
+| TEST SUITE
+|--------------------------------------------------------------------------
+*/
+
+describe("Rental Workflow", () => {
   const inquiryId = "33333333-3333-4333-8333-333333333333";
 
   const roomId = "22222222-2222-4222-8222-222222222222";
@@ -69,95 +99,149 @@ describe("Complete Rental Workflow", () => {
     vi.clearAllMocks();
   });
 
-  it("should submit inquiry, approve it, manually create tenant, occupy room and generate billing", async () => {
-    getRoomById.mockResolvedValue({
-      id: roomId,
-      room_number: "101",
-      status: "Available",
+  /*
+    |--------------------------------------------------------------------------
+    | CREATE INQUIRY
+    |--------------------------------------------------------------------------
+    */
+
+  describe("Create Inquiry Workflow", () => {
+    it("should submit a room inquiry successfully", async () => {
+      getRoomById.mockResolvedValue({
+        id: roomId,
+
+        room_number: "101",
+
+        status: "Available",
+      });
+
+      createInquiryRecord.mockResolvedValue({
+        id: inquiryId,
+
+        room_id: roomId,
+
+        status: "Pending",
+      });
+
+      const inquiry = await createInquiry({
+        name: "Juan Dela Cruz",
+
+        email: "juan@gmail.com",
+
+        contact: "09123456789",
+
+        roomId,
+
+        type: "Room Inquiry",
+
+        message: "I am interested.",
+      });
+
+      expect(inquiry.status).toBe("Pending");
+
+      expect(createInquiryRecord).toHaveBeenCalledTimes(1);
     });
+  });
 
-    createInquiryRecord.mockResolvedValue({
-      id: inquiryId,
-      room_id: roomId,
-      status: "Pending",
+  /*
+    |--------------------------------------------------------------------------
+    | APPROVE INQUIRY
+    |--------------------------------------------------------------------------
+    */
+
+  describe("Approve Inquiry Workflow", () => {
+    it("should approve a pending inquiry successfully", async () => {
+      getInquiryRecordById.mockResolvedValue({
+        id: inquiryId,
+
+        status: "Pending",
+      });
+
+      approveInquiryRecord.mockResolvedValue({
+        inquiry_id: inquiryId,
+
+        status: "Approved",
+      });
+
+      const approval = await approveInquiry({
+        inquiryId,
+
+        reviewedBy: adminId,
+      });
+
+      expect(approval.status).toBe("Approved");
+
+      expect(approveInquiryRecord).toHaveBeenCalled();
     });
+  });
 
-    const inquiry = await createInquiry({
-      name: "Juan Dela Cruz",
-      email: "juan@gmail.com",
-      contact: "09123456789",
-      roomId,
-      type: "Room Inquiry",
-      message: "I am interested.",
-    });
+  /*
+    |--------------------------------------------------------------------------
+    | TENANT CREATION + BILLING
+    |--------------------------------------------------------------------------
+    */
 
-    expect(inquiry.status).toBe("Pending");
+  describe("Tenant Creation Workflow", () => {
+    it("should create tenant and generate initial billing", async () => {
+      getTenantByInquiryId.mockResolvedValue(null);
 
-    getInquiryRecordById.mockResolvedValueOnce({
-      id: inquiryId,
-      status: "Pending",
-    });
+      getTenantByEmail.mockResolvedValue(null);
 
-    approveInquiryRecord.mockResolvedValue({
-      inquiry_id: inquiryId,
-      status: "Approved",
-    });
+      getRoomById.mockResolvedValue({
+        id: roomId,
 
-    const approval = await approveInquiry({
-      inquiryId,
-      reviewedBy: adminId,
-    });
+        status: "Available",
+      });
 
-    expect(approval.status).toBe("Approved");
+      bcrypt.hash.mockResolvedValue("hashed-password");
 
-    getInquiryRecordById.mockResolvedValueOnce({
-      id: inquiryId,
-      status: "Approved",
-    });
+      createTenant.mockResolvedValue({
+        tenant_id: tenantId,
 
-    getTenantByInquiryId.mockResolvedValue(null);
+        inquiry_id: inquiryId,
 
-    getTenantByEmail.mockResolvedValue(null);
+        room_id: roomId,
 
-    getRoomById.mockResolvedValue({
-      id: roomId,
-      status: "Available",
-    });
+        room_status: "Occupied",
+      });
 
-    bcrypt.hash.mockResolvedValue("hashed-password");
+      generateBilling.mockResolvedValue({
+        id: "55555555-5555-4555-8555-555555555555",
 
-    createTenant.mockResolvedValue({
-      tenant_id: tenantId,
-      inquiry_id: inquiryId,
-      room_id: roomId,
-      room_status: "Occupied",
-    });
+        tenant_id: tenantId,
 
-    generateBilling.mockResolvedValue({
-      id: "55555555-5555-4555-8555-555555555555",
-      tenant_id: tenantId,
-      total_amount: 5200,
-      status: "Pending",
-    });
+        total_amount: 5200,
 
-    const account = await createTenantAccount({
-      inquiryId,
-      fullName: "Juan Dela Cruz",
-      email: "juan@gmail.com",
-      contact: "09123456789",
-      roomId,
-      username: "juan101",
-      password: "Spartment2026",
-      createdBy: adminId,
-    });
+        status: "Pending",
+      });
 
-    expect(account.tenant.room_status).toBe("Occupied");
+      const account = await createTenantAccount({
+        inquiryId,
 
-    expect(account.billing.status).toBe("Pending");
+        fullName: "Juan Dela Cruz",
 
-    expect(generateBilling).toHaveBeenCalledWith({
-      tenantId,
-      billingType: "initial",
+        email: "juan@gmail.com",
+
+        contact: "09123456789",
+
+        roomId,
+
+        username: "juan101",
+
+        password: "Spartment2026",
+
+        createdBy: adminId,
+      });
+
+      expect(account.tenant.room_status).toBe("Occupied");
+
+      expect(account.billing.status).toBe("Pending");
+
+      expect(generateBilling).toHaveBeenCalledWith({
+        tenantId,
+
+        billingType: "initial",
+      });
     });
   });
 });
