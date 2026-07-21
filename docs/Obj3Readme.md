@@ -165,26 +165,45 @@
 - It should update the notification status from Unread to Read successfully.
 - It should display an appropriate message when notification information is unavailable.
 - It should pass all Notification Dashboard Integration Vitest unit tests successfully.
+
 ---
 
 ## Week 4 - Day 2
+
 ### Task Description
-**Implement High-Risk Tenant Detection**
+
+**Integrate Smart Recommendations with Dashboard**
 
 #### Sub-Tasks
-- Retrieve payment history records
-- Identify high-risk tenants
-- Store risk analysis results
+
+- Create Recommendation API
+- Connect Dashboard to Recommendation Service
+- Display smart recommendations from the backend
+- Display recommendation priority from the backend
+- Display recommendation category from the backend
+- Synchronize recommendation updates
+- Handle unavailable recommendation information
+- Create Recommendation Integration Unit Tests
 
 #### Deliverables
-- Payment History Integration
-- High-Risk Tenant Analysis
-- Risk Analysis Records
+
+- Recommendation API
+- Recommendation Service Integration
+- Connected Smart Recommendation
+- Connected Recommendation Priority
+- Connected Recommendation Category
+- Recommendation Error Message Handling
+- Recommendation Integration Tests
 
 #### Test Suite / PR Acceptance Criteria
-- It should retrieve tenant payment history records, including payment dates, balances, and payment statuses, successfully.
-- It should identify high-risk tenants accurately based on repeated late payments, overdue balances, or missed payments.
-- It should store risk analysis results, including tenant risk level and identified risk indicators, successfully in the database.
+
+- It should retrieve smart recommendations from the backend successfully.
+- It should connect the Dashboard to the Recommendation Service successfully.
+- It should display smart recommendations correctly using backend data.
+- It should display recommendation priorities correctly using backend data.
+- It should display recommendation categories correctly using backend data.
+- It should display an appropriate message when recommendation information is unavailable.
+- It should pass all Recommendation Integration Vitest unit tests successfully.
 
 ---
 
